@@ -45,7 +45,7 @@ class Store {
   addItem() {
     this.setState({
       ...this.state,
-      list: [...this.state.list, {code: ++this.key, title: 'Новая запись'}]
+      list: [...this.state.list, {code: ++this.key, title: 'Новая запись', selectCount: 0}]
     })
   };
 

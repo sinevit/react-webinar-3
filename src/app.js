@@ -16,8 +16,8 @@ function App({ store }) {
     const arr = ['2', '3', '4'];
     const number = [...selectCount + ''].slice(-1)[0];
     return (arr.includes(number) && !exeptionArr.includes(selectCount))
-      ? `| Выделяли ${selectCount} раза`
-      : `| Выделяли ${selectCount} раз`
+      ? ` | Выделяли ${selectCount} раза`
+      : ` | Выделяли ${selectCount} раз`
   }
 
   return (
