@@ -1,21 +1,23 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes, { bool } from 'prop-types';
 import './style.css';
 
-function Controls({onAdd}){
+function Controls({showModal, setShowModal}){
+  console.log('controls')
   return (
     <div className='Controls'>
-      <button onClick={() => onAdd()}>Добавить</button>
+      {!showModal && <button onClick={() => setShowModal(!showModal)}>Перейти</button>}
     </div>
   )
 }
 
 Controls.propTypes = {
-  onAdd: PropTypes.func
+  showModal : PropTypes.bool,
+  setShowModal: PropTypes.func
 };
 
 Controls.defaultProps = {
-  onAdd: () => {}
+  setShowModal: () => {}
 }
 
 export default React.memo(Controls);

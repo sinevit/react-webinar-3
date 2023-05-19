@@ -1,4 +1,4 @@
-import {generateCode} from "./utils";
+import { generateCode } from "./utils";
 
 /**
  * Хранилище состояния приложения
@@ -6,6 +6,7 @@ import {generateCode} from "./utils";
 class Store {
   constructor(initState = {}) {
     this.state = initState;
+    this.state.cart = [];
     this.listeners = []; // Слушатели изменений состояния
   }
 
@@ -43,46 +44,50 @@ class Store {
   /**
    * Добавление новой записи
    */
-  addItem() {
-    this.setState({
-      ...this.state,
-      list: [...this.state.list, {code: generateCode(), title: 'Новая запись'}]
-    })
-  };
+  // addItem() {
+  //   this.setState({
+  //     ...this.state,
+  //     list: [...this.state.list, {code: generateCode(), title: 'Новая запись'}]
+  //   })
+  // };
 
   /**
    * Удаление записи по коду
    * @param code
    */
-  deleteItem(code) {
-    this.setState({
-      ...this.state,
-      // Новый список, в котором не будет удаляемой записи
-      list: this.state.list.filter(item => item.code !== code)
-    })
-  };
+  // deleteItem(code) {
+  //   this.setState({
+  //     ...this.state,
+  //     // Новый список, в котором не будет удаляемой записи
+  //     list: this.state.list.filter(item => item.code !== code)
+  //   })
+  // };
 
   /**
    * Выделение записи по коду
    * @param code
    */
-  // selectItem(code) {
-  //   this.setState({
-  //     ...this.state,
-  //     list: this.state.list.map(item => {
-  //       if (item.code === code) {
-  //         // Смена выделения и подсчёт
-  //         return {
-  //           ...item,
-  //           selected: !item.selected,
-  //           count: item.selected ? item.count : item.count + 1 || 1,
-  //         };
-  //       }
-  //       // Сброс выделения если выделена
-  //       return item.selected ? {...item, selected: false} : item;
-  //     })
-  //   })
-  // }
+  addCartItem(item) {
+    console.log(item);
+    this.setState({
+      ...this.state,
+      cart: this.state.cart.map(el => {
+        if (!cart.length) {
+          this.setState({
+            ...this.state,
+            cart: [...this.state.cart, { ...item, count: 1 }],
+          })
+        }
+        // if (item.code === el.code) {
+        //   return {
+        //     ...el,
+        //     count: item.selected ? item.count : item.count + 1 || 1,
+        //   };
+        // }
+      })
+    })
+    console.log(this.state.cart)
+  }
 }
 
 export default Store;
