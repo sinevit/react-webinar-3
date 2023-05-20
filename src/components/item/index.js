@@ -6,16 +6,10 @@ import './style.css';
 function Item(props) {
 
   const callbacks = {
-    // onClick: () => {
-    //   props.onSelect(props.item.code);
-    //   if (!props.item.selected) {
-    //     setCount(count + 1);
-    //   }
-    // },
-    // onDelete: (e) => {
-    //   e.stopPropagation();
-    //   props.onDelete(props.item.code);
-    // }
+    onDelete: (e) => {
+      e.stopPropagation();
+      props.onDeleteItem(props.item.code);
+    },
     onAddCart: () => {
       props.onAddCart(props.item);
     }
@@ -25,11 +19,13 @@ function Item(props) {
     <div className='Item'>
       <div className='Item-code'>{props.item.code}</div>
       <div className='Item-title'>{props.item.title}</div>
-      <div className='Item-price'>{props.item.price}₽</div>
+      <div className='Item-price'>{(props.item.price).toLocaleString()} ₽</div>
+      {props.isCart && <div className='Item-count'>{(props.item.count)} шт</div>}
       <div className='Item-actions'>
-        <button onClick={callbacks.onAddCart}>
-          Добавить
-        </button>
+        {props.isCart
+          ? <button onClick={callbacks.onDelete}>Удалить</button>
+          : <button onClick={callbacks.onAddCart}>Добавить</button>
+        }
       </div>
     </div>
   );
@@ -39,9 +35,12 @@ Item.propTypes = {
   item: PropTypes.shape({
     code: PropTypes.number,
     title: PropTypes.string,
-    price: PropTypes.number
+    price: PropTypes.number,
+    count: PropTypes.number
   }).isRequired,
   onAddCart: PropTypes.func,
+  onAddCart: PropTypes.func,
+  isCart: PropTypes.bool
 };
 
 Item.defaultProps = {

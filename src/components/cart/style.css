@@ -13,7 +13,8 @@
 .Modal-content {
   width: 960px;
   height: 407px;
-  background-color: #FFF;
-  border-radius: 10px;
   overflow: hidden;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
 }

@@ -6,7 +6,6 @@ import { generateCode } from "./utils";
 class Store {
   constructor(initState = {}) {
     this.state = initState;
-    this.state.cart = [];
     this.listeners = []; // Слушатели изменений состояния
   }
 
@@ -42,51 +41,36 @@ class Store {
   }
 
   /**
-   * Добавление новой записи
-   */
-  // addItem() {
-  //   this.setState({
-  //     ...this.state,
-  //     list: [...this.state.list, {code: generateCode(), title: 'Новая запись'}]
-  //   })
-  // };
-
-  /**
-   * Удаление записи по коду
+   * Удаление товаров из корзины
    * @param code
    */
-  // deleteItem(code) {
-  //   this.setState({
-  //     ...this.state,
-  //     // Новый список, в котором не будет удаляемой записи
-  //     list: this.state.list.filter(item => item.code !== code)
-  //   })
-  // };
+  deleteCartItem(code) {
+    this.setState({
+      ...this.state,
+      cart: this.state.cart.filter(item => item.code !== code)
+    })
+  };
 
   /**
-   * Выделение записи по коду
+   * Добавление товаров в корзину
    * @param code
    */
   addCartItem(item) {
-    console.log(item);
-    this.setState({
-      ...this.state,
-      cart: this.state.cart.map(el => {
-        if (!cart.length) {
-          this.setState({
-            ...this.state,
-            cart: [...this.state.cart, { ...item, count: 1 }],
-          })
-        }
-        // if (item.code === el.code) {
-        //   return {
-        //     ...el,
-        //     count: item.selected ? item.count : item.count + 1 || 1,
-        //   };
-        // }
+
+    const isCartItem = this.state.cart.find(el => el.code === item.code)
+
+    if(isCartItem){
+      isCartItem.count++
+      this.setState({
+        ...this.state,
+        cart: [...this.state.cart]
       })
-    })
-    console.log(this.state.cart)
+    }else{
+      this.setState({
+        ...this.state,
+        cart: [...this.state.cart, {...item, count: 1}]
+      })
+    }
   }
 }
 

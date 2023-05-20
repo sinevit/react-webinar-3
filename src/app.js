@@ -15,17 +15,11 @@ function App({ store }) {
   const [showModal, setShowModal] = useState(false)
 
   const { list, cart } = store.getState();
-  // const cart = store.getState().cart;
-  console.log(list, cart)
 
   const callbacks = {
-    // onDeleteItem: useCallback((code) => {
-    //   store.deleteItem(code);
-    // }, [store]),
-
-    // onSelectItem: useCallback((code) => {
-    //   store.selectItem(code);
-    // }, [store]),
+    onDeleteItem: useCallback((code) => {
+      store.deleteCartItem(code);
+    }, [store]),
 
     onAddCart: useCallback((item) => {
       store.addCartItem(item);
@@ -36,15 +30,17 @@ function App({ store }) {
     <PageLayout>
       <Head title='Магазин' />
       <Controls setShowModal={setShowModal}
-        showModal={showModal} />
+        showModal={showModal}
+        cart={cart} />
       <List list={list}
-        // onDeleteItem={callbacks.onDeleteItem}
         onAddCart={callbacks.onAddCart}
+        isCart={false}
       />
       {showModal && <Modal>
         <Cart cart={cart}
           setShowModal={setShowModal}
-          showModal={showModal} />
+          showModal={showModal}
+          onDeleteItem={callbacks.onDeleteItem} />
       </Modal>}
     </PageLayout>
   );

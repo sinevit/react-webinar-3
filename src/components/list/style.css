@@ -2,6 +2,10 @@
 
 }
 
+.List-cart{
+  padding: 70px 0;
+}
+
 .List-item {
   border-bottom: 1px dashed #ccc;
 }

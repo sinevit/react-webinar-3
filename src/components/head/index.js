@@ -10,7 +10,7 @@ function Head({title, showModal, setShowModal}){
   return (
     <div className={cn() + ' ' + (showModal ? cn('cart') : '')}>
       <h1>{title}</h1>
-      {showModal && <button onClick={() => setShowModal(!showModal)}>Закрыть</button> }
+      {showModal && <button className={cn('cart-btn')} onClick={() => setShowModal(!showModal)}>Закрыть</button> }
     </div>
   )
 }
