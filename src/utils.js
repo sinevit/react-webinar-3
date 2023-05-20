@@ -58,8 +58,8 @@ export function totalCartCount(cart){
 //получаем данные о кол-ве товаров и общей сумме
 export function getCartInfo(cart){
   if(!cart.length){
-    return ' пока ничего нет '
+    return 'пусто'
   }else{
-    return ` ${cart.length} ${plural(cart.length, {one: 'товар', few: 'товара', many: 'товаров'})} / ${totalCartCount(cart).toLocaleString()} ₽`
+    return `${cart.length} ${plural(cart.length, {one: 'товар', few: 'товара', many: 'товаров'})} / ${totalCartCount(cart).toLocaleString()} ₽`
   }
 }

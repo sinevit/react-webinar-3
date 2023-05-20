@@ -1,28 +1,32 @@
 import React from "react";
-import PropTypes, { bool } from 'prop-types';
-import {getCartInfo} from '../../utils'
+import PropTypes from 'prop-types';
+import { cn as bem } from '@bem-react/classname';
+import { getCartInfo } from '../../utils'
 import './style.css';
 
-function Controls({showModal, setShowModal, cart}){
-  console.log('controls')
+function Controls({ showModal, setShowModal, cart }) {
+
+  const cn = bem('Controls');
+
   return (
-    <div className='Controls'>
-      <div>
-        <p>В корзине:<span>{getCartInfo(cart)}</span></p>
+    <div className={cn()}>
+      <div className={cn('title')}>
+        В корзине:
+        <span className={cn('title', { weight: 'bold' })}>{getCartInfo(cart)}</span>
       </div>
-      <button onClick={() => setShowModal(!showModal)}>Перейти</button>
+      <button className={cn('btn')} onClick={() => setShowModal(!showModal)}>Перейти</button>
     </div>
   )
 }
 
 Controls.propTypes = {
-  showModal : PropTypes.bool,
+  showModal: PropTypes.bool,
   setShowModal: PropTypes.func,
   cart: PropTypes.array,
 };
 
 Controls.defaultProps = {
-  setShowModal: () => {}
+  setShowModal: () => { }
 }
 
 export default React.memo(Controls);

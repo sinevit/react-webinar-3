@@ -17,7 +17,7 @@ function Cart(props) {
           showModal={props.showModal} />
         <List list={props.cart} isCart={true} onDeleteItem={props.onDeleteItem} />
         <div className={cn('total')}>
-          Итого <span>{totalCartCount(props.cart)}</span>
+          Итого <span>{totalCartCount(props.cart).toLocaleString()} ₽</span>
         </div>
       </div>
     </div>
@@ -25,15 +25,20 @@ function Cart(props) {
 }
 
 Cart.propTypes = {
-  cart: PropTypes.arrayOf(PropTypes.shape([{
+  cart: PropTypes.arrayOf(PropTypes.shape({
     code: PropTypes.number,
     title: PropTypes.string,
     count: PropTypes.number,
     price: PropTypes.number
-  }])).isRequired,
+  })).isRequired,
   showModal: PropTypes.bool,
   setShowModal: PropTypes.func,
   onDeleteItem: PropTypes.func,
 };
+
+Cart.defaultProps = {
+  setShowModal: () => {},
+  onDeleteItem: () => {}
+}
 
 export default React.memo(Cart);
