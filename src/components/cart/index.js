@@ -3,7 +3,6 @@ import Head from "../../components/head";
 import List from "../../components/list";
 import PropTypes from "prop-types";
 import { cn as bem } from '@bem-react/classname';
-import { totalCartCount } from '../../utils';
 import './style.css';
 
 function Cart(props) {
@@ -17,7 +16,7 @@ function Cart(props) {
           showModal={props.showModal} />
         <List list={props.cart} isCart={true} onDeleteItem={props.onDeleteItem} />
         <div className={cn('total')}>
-          Итого <span>{totalCartCount(props.cart).toLocaleString()} ₽</span>
+          Итого <span>{props.totalPrice.toLocaleString('ru-RU')} ₽</span>
         </div>
       </div>
     </div>
@@ -31,6 +30,7 @@ Cart.propTypes = {
     count: PropTypes.number,
     price: PropTypes.number
   })).isRequired,
+  totalPrice: PropTypes.number,
   showModal: PropTypes.bool,
   setShowModal: PropTypes.func,
   onDeleteItem: PropTypes.func,

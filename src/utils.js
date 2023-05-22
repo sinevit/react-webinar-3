@@ -50,16 +50,3 @@ export function generateCode2() {
   return generateCode2.value ? ++generateCode2.value : generateCode2.value = 1;
 }
 
-//получаем общую сумму товаров
-export function totalCartCount(cart){
-  return cart.reduce((accum, current) => accum + current.price * current.count, 0);
-}
-
-//получаем данные о кол-ве товаров и общей сумме
-export function getCartInfo(cart){
-  if(!cart.length){
-    return 'пусто'
-  }else{
-    return `${cart.length} ${plural(cart.length, {one: 'товар', few: 'товара', many: 'товаров'})} / ${totalCartCount(cart).toLocaleString()} ₽`
-  }
-}

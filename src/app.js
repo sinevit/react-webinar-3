@@ -14,16 +14,20 @@ import Cart from "./components/cart";
 function App({ store }) {
   const [showModal, setShowModal] = useState(false)
 
-  const { list, cart } = store.getState();
+  const { list, cart, totalPrice, totalCount } = store.getState();
 
   const callbacks = {
     onDeleteItem: useCallback((code) => {
       store.deleteCartItem(code);
+      store.getTotalCount(); 
+      store.getTotalPrice();
     }, [store]),
 
-    onAddCart: useCallback((item) => {
-      store.addCartItem(item);
-    }, [])
+    onAddCart: useCallback((code) => {
+      store.addCartItem(code);
+      store.getTotalCount(); 
+      store.getTotalPrice();
+    }, [store])
   }
 
   return (
@@ -31,7 +35,10 @@ function App({ store }) {
       <Head title='Магазин' />
       <Controls setShowModal={setShowModal}
         showModal={showModal}
-        cart={cart} />
+        cart={cart}
+        totalPrice = {totalPrice}
+        totalCount = {totalCount} 
+        />
       <List list={list}
         onAddCart={callbacks.onAddCart}
         isCart={false}
@@ -40,7 +47,8 @@ function App({ store }) {
         <Cart cart={cart}
           setShowModal={setShowModal}
           showModal={showModal}
-          onDeleteItem={callbacks.onDeleteItem} />
+          onDeleteItem={callbacks.onDeleteItem} 
+          totalPrice = {totalPrice}/>
       </Modal>}
     </PageLayout>
   );
