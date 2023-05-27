@@ -16,7 +16,7 @@ function Card() {
   useEffect(() => {
     store.actions.modals.close();
     store.actions.card.loadCard(id);
-  }, []);
+  }, [id]);
 
   const select = useSelector(state => ({
     card: state.card.card,
