@@ -20,7 +20,6 @@ class Catalog extends StoreModule {
   }
 
   setCurrentPage(page) {
-    console.log(page)
     this.setState({
       ...this.getState(),
       currentPage: page
@@ -34,7 +33,6 @@ class Catalog extends StoreModule {
 
     const response = await fetch(`${baseURL}?limit=${limit}&skip=${skip}&fields=items(*),count`);
     const json = await response.json();
-    console.log(json)
     this.setState({
       ...this.getState(),
       list: json.result.items,
