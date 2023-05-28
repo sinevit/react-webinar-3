@@ -7,6 +7,8 @@ import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
 import CardContent from "../../components/item-card";
 import { useParams } from 'react-router-dom';
+import Menu from '../../components/menu';
+import MenuLayout from '../../components/menu-layout';
 
 function Card() {
 
@@ -34,8 +36,11 @@ function Card() {
   return (
     <PageLayout>
       <Head title={select.card.title} />
-      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
-        sum={select.sum} />
+      <MenuLayout>
+        <Menu title='Главная' href='/' />
+        <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
+          sum={select.sum} />
+      </MenuLayout>
       <CardContent card={select.card} onAdd={callbacks.addToBasket}/>
     </PageLayout>
   );

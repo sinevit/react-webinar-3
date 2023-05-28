@@ -6,12 +6,6 @@
   font-size: 18px;
 }
 
-.BasketTool-main-link {
-  text-decoration-line: underline;
-  color: #0087E9;
-  cursor: pointer;
-}
-
 .BasketTool-label {}
 
 .BasketTool-total {

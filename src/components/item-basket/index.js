@@ -16,8 +16,7 @@ function ItemBasket(props) {
 
   return (
     <div className={cn()}>
-      {/*<div className={cn('code')}>{props.item._id}</div>*/}
-      <Link to={`/card/${props.item._id}`} className={cn('title')}>
+      <Link to={props.link} className={cn('title')}>
         {props.item.title}
       </Link>
       <div className={cn('right')}>
@@ -37,6 +36,7 @@ ItemBasket.propTypes = {
     amount: PropTypes.number
   }).isRequired,
   onRemove: propTypes.func,
+  link: PropTypes.string
 }
 
 ItemBasket.defaultProps = {
