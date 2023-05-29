@@ -4,13 +4,13 @@ import { cn as bem } from '@bem-react/classname';
 import './style.css';
 import { Link } from "react-router-dom";
 
-function Menu({ title, href }) {
+function Menu({ menu }) {
   const cn = bem('Menu');
   
   return (
     <div className={cn()}>
       <ul className={cn('list')}>
-        <li className={cn('item')}><Link to={href} className={cn('link')}>{title}</Link></li>
+        {menu.map((item,i) => <li key={i} className={cn('item')}><Link to={item.link} className={cn('link')}>{item.text}</Link></li>)}
       </ul>
     </div>
   );

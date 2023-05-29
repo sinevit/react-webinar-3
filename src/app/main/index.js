@@ -25,7 +25,8 @@ function Main() {
     sum: state.basket.sum,
     limit: state.catalog.limit,
     totalArticlesCount: state.catalog.totalArticlesCount,
-    currentPage: state.catalog.currentPage
+    currentPage: state.catalog.currentPage,
+    menu: state.menu,
   }));
 
   const callbacks = {
@@ -47,7 +48,7 @@ function Main() {
     <PageLayout>
       <Head title='Магазин' />
       <MenuLayout>
-        <Menu title='Главная' href='/' />
+        <Menu menu={select.menu} />
         <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
           sum={select.sum} />
       </MenuLayout>

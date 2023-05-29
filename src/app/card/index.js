@@ -24,7 +24,8 @@ function Card() {
   const select = useSelector(state => ({
     card: state.card.card,
     amount: state.basket.amount,
-    sum: state.basket.sum
+    sum: state.basket.sum,
+    menu: state.menu,
   }));
 
   const callbacks = {
@@ -38,7 +39,7 @@ function Card() {
     <PageLayout>
       <Head title={select.card?.title} />
       <MenuLayout>
-        <Menu title='Главная' href='/' />
+        <Menu menu={select.menu} />
         <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
           sum={select.sum} />
       </MenuLayout>
