@@ -28,6 +28,11 @@ class Catalog extends StoreModule {
   }
 
   async load() {
+    this.setState({
+      ...this.getState(),
+      list: []
+    });
+
     const limit = this.getState().limit;
     const skip = (this.getState().currentPage - 1) * limit;
 

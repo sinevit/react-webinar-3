@@ -13,6 +13,7 @@ function CardContent(props) {
     onAdd: (e) => props.onAdd(props.card._id)
   };
 
+
   return (
     <article className={cn()}>
       <p className={cn('item')}>{props.card.description}</p>
@@ -28,6 +29,7 @@ function CardContent(props) {
       <p className={cn('item', { weight: "bold" })}> Цена:  {numberFormat(props.card.price)} ₽</p>
       <button onClick={callbacks.onAdd}> Добавить </button>
     </article>
+
   );
 
 }

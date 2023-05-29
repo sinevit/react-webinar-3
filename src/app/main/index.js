@@ -9,6 +9,7 @@ import useSelector from "../../store/use-selector";
 import Paginations from '../../components/paginations';
 import Menu from '../../components/menu';
 import MenuLayout from '../../components/menu-layout';
+import Preloader from '../../components/preloader';
 
 function Main() {
 
@@ -50,7 +51,9 @@ function Main() {
         <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
           sum={select.sum} />
       </MenuLayout>
-      <List list={select.list} renderItem={renders.item} />
+      {select.list.length
+        ? <List list={select.list} renderItem={renders.item} />
+        : <Preloader />}
       <Paginations totalArticlesCount={select.totalArticlesCount}
         limit={select.limit}
         currentPage={select.currentPage}

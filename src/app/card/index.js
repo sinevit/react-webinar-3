@@ -9,6 +9,7 @@ import CardContent from "../../components/item-card";
 import { useParams } from 'react-router-dom';
 import Menu from '../../components/menu';
 import MenuLayout from '../../components/menu-layout';
+import Preloader from '../../components/preloader';
 
 function Card() {
 
@@ -35,13 +36,15 @@ function Card() {
 
   return (
     <PageLayout>
-      <Head title={select.card.title} />
+      <Head title={select.card?.title} />
       <MenuLayout>
         <Menu title='Главная' href='/' />
         <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
           sum={select.sum} />
       </MenuLayout>
-      <CardContent card={select.card} onAdd={callbacks.addToBasket}/>
+      {select.card
+        ? <CardContent card={select.card} onAdd={callbacks.addToBasket} />
+        : <Preloader />}
     </PageLayout>
   );
 }
