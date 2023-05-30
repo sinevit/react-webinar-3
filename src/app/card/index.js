@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import Menu from '../../components/menu';
 import MenuLayout from '../../components/menu-layout';
 import Preloader from '../../components/preloader';
+import { LanguageList } from '../../lang';
 
 function Card() {
 
@@ -26,6 +27,7 @@ function Card() {
     amount: state.basket.amount,
     sum: state.basket.sum,
     menu: state.menu,
+    language: state.language.language
   }));
 
   const callbacks = {
@@ -35,16 +37,20 @@ function Card() {
     openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
   }
 
+  const translate = (elem) => LanguageList[select.language][elem]
+
   return (
     <PageLayout>
       <Head title={select.card?.title} />
       <MenuLayout>
-        <Menu menu={select.menu} />
+        <Menu menu={select.menu} translate={translate} />
         <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
-          sum={select.sum} />
+          sum={select.sum} translate={translate} />
       </MenuLayout>
       {select.card
-        ? <CardContent card={select.card} onAdd={callbacks.addToBasket} />
+        ? <CardContent card={select.card} onAdd={callbacks.addToBasket} madeIn={translate('madeIn')}
+          category={translate('category')} edition={translate('edition')} price={translate('price')}
+          buttonName={translate('add')} />
         : <Preloader />}
     </PageLayout>
   );

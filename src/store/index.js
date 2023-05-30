@@ -36,7 +36,7 @@ class Store {
 
   /**
    * Выбор состояния
-   * @returns {{basket: Object, catalog: Object, modals: Object, card: Object, menu: Array}}
+   * @returns {{basket: Object, catalog: Object, modals: Object, card: Object, menu: Array, language: Object}}
    */
   getState() {
     return this.state;

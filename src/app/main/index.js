@@ -10,6 +10,9 @@ import Paginations from '../../components/paginations';
 import Menu from '../../components/menu';
 import MenuLayout from '../../components/menu-layout';
 import Preloader from '../../components/preloader';
+import HeadLayout from '../../components/head-layout';
+import LanguageTool from '../../components/language-tool';
+import { LanguageList } from '../../lang'
 
 function Main() {
 
@@ -27,6 +30,7 @@ function Main() {
     totalArticlesCount: state.catalog.totalArticlesCount,
     currentPage: state.catalog.currentPage,
     menu: state.menu,
+    language: state.language.language
   }));
 
   const callbacks = {
@@ -36,21 +40,28 @@ function Main() {
     openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
     // Выбор страницы товаров
     onClickPagination: useCallback((page) => store.actions.catalog.setCurrentPage(page), [store]),
+    // Выбор страницы товаров
+    setLanguage: useCallback((lang) => store.actions.language.setLanguage(lang), [store]),
   }
+
+  const translate = (elem) => LanguageList[select.language][elem]
 
   const renders = {
     item: useCallback((item) => {
-      return <Item item={item} link={`/card/${item._id}`} onAdd={callbacks.addToBasket} />
-    }, [callbacks.addToBasket]),
+      return <Item item={item} link={`/card/${item._id}`} onAdd={callbacks.addToBasket} buttonName={translate('add')}/>
+    }, [callbacks.addToBasket, select.language]),
   };
 
   return (
     <PageLayout>
-      <Head title='Магазин' />
+      <HeadLayout>
+        <Head title={translate('shop')} />
+        <LanguageTool setLanguage={callbacks.setLanguage} />
+      </HeadLayout>
       <MenuLayout>
-        <Menu menu={select.menu} />
+        <Menu menu={select.menu}  translate={translate}/>
         <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
-          sum={select.sum} />
+          sum={select.sum} translate={translate}/>
       </MenuLayout>
       {select.list.length
         ? <List list={select.list} renderItem={renders.item} />

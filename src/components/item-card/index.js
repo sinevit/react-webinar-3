@@ -17,17 +17,17 @@ function CardContent(props) {
   return (
     <article className={cn()}>
       <p className={cn('item')}>{props.card.description}</p>
-      <p className={cn('item')}> Страна производитель:
+      <p className={cn('item')}> {props.madeIn}
         <b> {props.card.madeIn?.title} ({props.card.madeIn?.code})</b>
       </p>
-      <p className={cn('item')}> Категория:
+      <p className={cn('item')}> {props.category}
         <b> {props.card.category?.title}</b>
       </p>
-      <p className={cn('item')}> Год выпуска:
+      <p className={cn('item')}> {props.edition}
         <b> {props.card.edition}</b>
       </p>
-      <p className={cn('item', { weight: "bold" })}> Цена:  {numberFormat(props.card.price)} ₽</p>
-      <button onClick={callbacks.onAdd}> Добавить </button>
+      <p className={cn('item', { weight: "bold" })}> {props.price}  {numberFormat(props.card.price)} ₽</p>
+      <button onClick={callbacks.onAdd}> {props.buttonName} </button>
     </article>
 
   );
@@ -43,6 +43,11 @@ CardContent.propTypes = {
     price: PropTypes.number,
   }).isRequired,
   onAdd: propTypes.func,
+  madeIn: PropTypes.string,
+  category: PropTypes.string,
+  edition: PropTypes.string,
+  price: PropTypes.string,
+  buttonName: PropTypes.string,
 }
 
 CardContent.defaultProps = {
