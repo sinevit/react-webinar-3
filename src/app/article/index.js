@@ -1,5 +1,5 @@
-import {memo, useCallback, useMemo} from 'react';
-import {useParams} from "react-router-dom";
+import { memo, useCallback, useMemo } from 'react';
+import { useParams } from "react-router-dom";
 import useStore from "../../hooks/use-store";
 import useSelector from "../../hooks/use-selector";
 import useTranslate from "../../hooks/use-translate";
@@ -10,6 +10,7 @@ import Navigation from "../../containers/navigation";
 import Spinner from "../../components/spinner";
 import ArticleCard from "../../components/article-card";
 import LocaleSelect from "../../containers/locale-select";
+import LoginTool from '../../containers/login-tool';
 
 function Article() {
   const store = useStore();
@@ -19,6 +20,7 @@ function Article() {
 
   useInit(() => {
     store.actions.article.load(params.id);
+    // store.actions.auth.getUser();
   }, [params.id]);
 
   const select = useSelector(state => ({
@@ -26,7 +28,7 @@ function Article() {
     waiting: state.article.waiting,
   }));
 
-  const {t} = useTranslate();
+  const { t } = useTranslate();
 
   const callbacks = {
     // Добавление в корзину
@@ -35,12 +37,13 @@ function Article() {
 
   return (
     <PageLayout>
+      <LoginTool/>
       <Head title={select.article.title}>
-        <LocaleSelect/>
+        <LocaleSelect />
       </Head>
-      <Navigation/>
+      <Navigation />
       <Spinner active={select.waiting}>
-        <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
+        <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t} />
       </Spinner>
     </PageLayout>
   );
