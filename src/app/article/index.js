@@ -10,7 +10,7 @@ import Navigation from "../../containers/navigation";
 import Spinner from "../../components/spinner";
 import ArticleCard from "../../components/article-card";
 import LocaleSelect from "../../containers/locale-select";
-import LoginTool from '../../containers/login-tool';
+import LoginPanel from '../../containers/login-panel';
 
 function Article() {
   const store = useStore();
@@ -20,7 +20,6 @@ function Article() {
 
   useInit(() => {
     store.actions.article.load(params.id);
-    // store.actions.auth.getUser();
   }, [params.id]);
 
   const select = useSelector(state => ({
@@ -37,7 +36,7 @@ function Article() {
 
   return (
     <PageLayout>
-      <LoginTool/>
+      <LoginPanel/>
       <Head title={select.article.title}>
         <LocaleSelect />
       </Head>

@@ -9,26 +9,24 @@ class AuthState extends StoreModule {
     return {
       user: null,
       isAuth: false,
-      error: null
+      error: null,
+      waiting: false // признак ожидания загрузки
     }
   }
 
   async getUser() {
-    this.setState({ ...this.getState(), isAuth: false});
     const token = localStorage.getItem('token');
-    console.log(token)
+
     if (token) {
       const response = await fetch(`/api/v1/users/self`, {
         headers: { "X-Token": token },
       });
       const json = await response.json();
-      console.log(json)
 
-      this.setState({ ...this.getState(), isAuth: true, user: json.result});
+      this.setState({ ...this.getState(), isAuth: true, user: json.result });
     }
 
   }
-
 
   /**
    * авторизация пользователя
@@ -38,6 +36,8 @@ class AuthState extends StoreModule {
    */
 
   async login(login, password) {
+    // установка признака ожидания загрузки
+    this.setState({...this.getState(), waiting: true, isAuth: false});
 
     const data = { "login": login, "password": password }
 
@@ -47,35 +47,39 @@ class AuthState extends StoreModule {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
+      const json = await response.json();
 
-      if (response?.ok || response.status === 200) {
-        const json = await response.json();
-        console.log(json)
+      if (response?.ok) {
+
         localStorage.setItem('token', json.result.token);
-
         // Пользователь авторизован
-        this.setState({ ...this.getState(), isAuth: true, user: json.result.user, error: null});
+        this.setState({ ...this.getState(), isAuth: true, user: json.result.user, error: null });
 
       } else {
-        this.setState({ ...this.getState(), error: `${response.status} ${response.statusText}` })
+        // Ошибка при загрузке
+        this.setState({ ...this.getState(), error: `${json.error.data.issues[0].message}` })
       }
 
     } catch (e) {
       // Ошибка при загрузке
-      // throw new Error(`status ${response.status}`)
+      this.setState({ ...this.getState(), error: `${e.name} ${e.message}` })
     }
+
+    this.setState({ ...this.getState(), waiting: false })
   }
 
   async logout() {
-		const token = localStorage.getItem('token');
+    this.setState({ ...this.getState(), waiting: true });
+
+    const token = localStorage.getItem('token');
 
     await fetch(`/api/v1/users/sign`, {
       method: "DELETE",
-      headers: { "X-Token": token},
+      headers: { "X-Token": token },
     });
 
     localStorage.removeItem("token");
-    this.setState({ ...this.getState(), isAuth: false, user: null});
+    this.setState({ ...this.getState(), isAuth: false, user: null, waiting: false });
 
   }
 }

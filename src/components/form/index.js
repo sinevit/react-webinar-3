@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 import Input from "../input";
-import { Navigate } from "react-router-dom";
 
 function Form(props) {
   const cn = bem('LoginForm');
@@ -12,10 +11,6 @@ function Form(props) {
     e.preventDefault();
     const [login, password] = e.target;
     props.login(login.value, password.value);
-  }
-
-  if (props.isAuth) {
-    return <Navigate to={'/profile'} />
   }
 
   return (
@@ -28,7 +23,7 @@ function Form(props) {
         <label>{props.password}</label>
         <Input className={cn('input')} type="password" name='password' theme="login" value='' />
         {props.error &&
-          <span className={cn('form',{error: true})}>{props.error}</span>}
+          <span className={cn('form', { error: true })}>{props.error}</span>}
         <button type="submit">{props.buttonName}</button>
 
       </form>
@@ -42,7 +37,6 @@ Form.propTypes = {
   password: PropTypes.string,
   buttonName: PropTypes.string,
   login: PropTypes.func.isRequired,
-  isAuth: PropTypes.bool,
   error: PropTypes.string
 };
 

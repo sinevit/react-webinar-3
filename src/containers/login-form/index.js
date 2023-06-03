@@ -18,11 +18,15 @@ function LoginForm() {
     login: useCallback((login, password) => store.actions.auth.login(login, password), [store]),
   }
 
+  if (select.isAuth) {
+    return <Navigate to={'/profile'} />
+  }
+
   const { t } = useTranslate();
 
   return (
     <Form login={callbacks.login} title={t('login.title')} loginText={t('login.login')}
-      password={t('login.password')} buttonName={t('login.button')} isAuth={select.isAuth} error={select.error} />
+      password={t('login.password')} buttonName={t('login.button')} error={select.error} />
   );
 }
 

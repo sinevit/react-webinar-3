@@ -12,6 +12,6 @@
   align-items: start;
 }
 .LoginForm-form_error{
-  padding: 20px;
+  padding: 20px 0;
   color: red;
 }

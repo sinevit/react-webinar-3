@@ -1,4 +1,4 @@
-import {memo} from 'react';
+import { memo } from 'react';
 import useStore from "../../hooks/use-store";
 import useTranslate from "../../hooks/use-translate";
 import useInit from "../../hooks/use-init";
@@ -8,7 +8,8 @@ import Head from "../../components/head";
 import CatalogFilter from "../../containers/catalog-filter";
 import CatalogList from "../../containers/catalog-list";
 import LocaleSelect from "../../containers/locale-select";
-import LoginTool from '../../containers/login-tool';
+
+import LoginPanel from '../../containers/login-panel';
 
 function Main() {
 
@@ -16,20 +17,19 @@ function Main() {
 
   useInit(() => {
     store.actions.catalog.initParams();
-    // store.actions.auth.getUser();
   }, [], true);
 
-  const {t} = useTranslate();
+  const { t } = useTranslate();
 
   return (
     <PageLayout>
-      <LoginTool />
+      <LoginPanel />
       <Head title={t('title')}>
-        <LocaleSelect/>
+        <LocaleSelect />
       </Head>
       <Navigation />
-      <CatalogFilter/>
-      <CatalogList/>
+      <CatalogFilter />
+      <CatalogList />
     </PageLayout>
   );
 }
