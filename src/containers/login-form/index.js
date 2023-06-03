@@ -19,7 +19,7 @@ function LoginForm() {
   }
 
   if (select.isAuth) {
-    return <Navigate to={'/profile'} />
+    return <Navigate to={'/'} />
   }
 
   const { t } = useTranslate();
