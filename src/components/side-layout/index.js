@@ -6,9 +6,9 @@ import './style.css';
 function SideLayout({ children, side, padding, gap }) {
   const cn = bem('SideLayout');
   return (
-    <div className={cn({ side, padding})}>
+    <div className={cn({ side, padding, gap })}>
       {React.Children.map(children, (child) => (
-        <div key={child.key} className={cn('item',{gap})}>{child}</div>
+        <div key={child.key} className={cn('item', { gap })}>{child}</div>
       ))}
     </div>
   );

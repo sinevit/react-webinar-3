@@ -6,7 +6,7 @@ import SideLayout from "../side-layout";
 function LoginTool(props) {
 
   return (
-      <SideLayout side="end" padding="medium" gap="small">
+      <SideLayout side="end" padding="medium" gap="medium">
         {props.isAuth && props.userName
           ?
           <>

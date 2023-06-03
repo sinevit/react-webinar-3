@@ -1,4 +1,4 @@
-import { memoА} from 'react';
+import { memo } from 'react';
 import useStore from "../../hooks/use-store";
 import useTranslate from "../../hooks/use-translate";
 import useSelector from "../../hooks/use-selector";
