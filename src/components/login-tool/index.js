@@ -6,8 +6,8 @@ import SideLayout from "../side-layout";
 function LoginTool(props) {
 
   return (
-      <SideLayout side="end" padding="medium" gap="medium">
-        {props.isAuth && props.userName
+      <SideLayout side="end" padding="login" gap="medium">
+        {props.isAuth
           ?
           <>
             <Link to={"/profile"}>{props.userName}</Link>
@@ -27,7 +27,8 @@ LoginTool.propTypes = {
 }
 
 LoginTool.defaultProps = {
-  logout: () => {}
+  logout: () => {},
+  userName: ''
 }
 
 export default memo(LoginTool);

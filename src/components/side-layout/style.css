@@ -24,6 +24,10 @@
   padding: 10px;
 }
 
+.SideLayout_padding_login {
+  padding: 10px 20px;
+}
+
 .SideLayout_padding_medium {
   padding: 20px;
 }

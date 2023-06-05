@@ -1,25 +1,24 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import useStore from "../../hooks/use-store";
+import useInit from "../../hooks/use-init";
 import useSelector from "../../hooks/use-selector";
 import useTranslate from "../../hooks/use-translate";
 import Form from "../../components/form";
-import { Navigate } from "react-router-dom";
 
 function LoginForm() {
 
   const store = useStore();
 
+  useInit(() => {
+    store.actions.login.resetError();
+  });
+
   const select = useSelector(state => ({
-    isAuth: state.auth.isAuth,
-    error: state.auth.error,
+    error: state.login.error,
   }));
 
   const callbacks = {
-    login: useCallback((login, password) => store.actions.auth.login(login, password), [store]),
-  }
-
-  if (select.isAuth) {
-    return <Navigate to={'/'} />
+    login: useCallback((login, password) => store.actions.login.login(login, password), [store]),
   }
 
   const { t } = useTranslate();

@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import useStore from "../../hooks/use-store";
+import useInit from "../../hooks/use-init";
 import useTranslate from "../../hooks/use-translate";
 import useSelector from "../../hooks/use-selector";
 import Navigation from "../../containers/navigation";
@@ -9,17 +10,14 @@ import LocaleSelect from "../../containers/locale-select";
 import ProfileCard from '../../components/profile-card';
 import { Navigate } from 'react-router-dom';
 import LoginPanel from '../../containers/login-panel';
+import Spinner from '../../components/spinner';
 
 function Profile() {
 
   const select = useSelector(state => ({
-    user: state.auth.user,
-    isAuth: state.auth.isAuth,
+    data: state.profile.data,
+    waiting: state.profile.waiting,
   }));
-
-  if (!select.isAuth) {
-    return <Navigate to='/login' />   
-  }
 
   const { t } = useTranslate();
 
@@ -30,7 +28,10 @@ function Profile() {
         <LocaleSelect />
       </Head>
       <Navigation />
-      <ProfileCard t={t} user={select.user}/>
+      <Spinner active={select.waiting}>
+        <ProfileCard t={t} data={select.data} />
+      </Spinner>
+
     </PageLayout>
   );
 }
