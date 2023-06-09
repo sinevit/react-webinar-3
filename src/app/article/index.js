@@ -45,8 +45,12 @@ function Article() {
   const callbacks = {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
+    // Добавление поста
+    postComment: useCallback((postText) => {
+      dispatch(commentsActions.addComment(postText,params.id, 'article'))
+      dispatch(commentsActions.load(params.id));
+    }, [store]),
   }
-
   console.log(select.comments)
   return (
     <PageLayout>
@@ -59,7 +63,7 @@ function Article() {
         <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
       </Spinner>
       <Spinner active={select.waitingC}>
-        <Comments isExists={selected.exists} data={select.comments}/>
+        <Comments isExists={selected.exists} data={select.comments} postComment={callbacks.postComment}/>
       </Spinner>
     </PageLayout>
   );

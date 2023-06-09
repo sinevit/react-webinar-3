@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-function NewComment({ isAnswer, }) {
+function NewComment({ isAnswer, postComment}) {
   const cn = bem('NewComment');
 
   const [commentContent, setCommentContent] = useState('');
+
+  const callbacks = {
+    postComment: () => postComment(commentContent),
+  }
 
   return (
     <div className={cn()}>
@@ -18,7 +22,7 @@ function NewComment({ isAnswer, }) {
           onChange={e => setCommentContent(e.target.value)} 
         />
       </label>
-      <button type='submit'>Отправить</button>
+      <button type='submit' onClick={callbacks.postComment}>Отправить</button>
       {isAnswer && <button type='reset'>Отмена</button>}
     </div>
   );

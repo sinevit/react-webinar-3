@@ -19,14 +19,14 @@ import {cn as bem} from '@bem-react/classname';
 import './style.css';
 
 
-function Comments({isExists, t, data}) {
+function Comments({isExists, postComment, data}) {
   const cn = bem('Comments');
   return (
       <div className={cn()}>
           <h3 className={cn('title')}>Комментарии ({data.count})</h3>
           {/* <h2>{t('comment.title')}</h2> */}
           {/* <PostList></PostList> */}
-          {isExists ? <NewComment /> : <RedirectText/>}
+          {isExists ? <NewComment postComment={postComment}/> : <RedirectText/>}
       </div>
   );
 }
@@ -34,7 +34,7 @@ function Comments({isExists, t, data}) {
 Comments.propTypes = {
   data: PropTypes.object,
   isExists: PropTypes.bool,
-  t: PropTypes.func
+  postComment: PropTypes.func
 };
 
 Comments.defaultProps = {

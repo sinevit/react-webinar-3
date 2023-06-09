@@ -23,17 +23,23 @@ export default {
     }
   },
 
-  add: (id) => {
+  addComment: (text, parentId, type) => {
     return async (dispatch, getState, services) => {
       // Сброс комментариев и установка признака ожидания загрузки
       dispatch({type: 'comments/load-start'});
 
       try {
         const res = await services.api.request({
-          url: `/api/v1/comments?search[parent]=${id}&limit=*&fields=items(_id,text,dateCreate,author(profile(name)),parent(_id,_type)),count`
+          url: `/api/v1/comments`,
+          method: "POST",
+          body: JSON.stringify({
+            text,
+            parent: { _id: parentId, _type: type },
+          }),
         });
+        console.log(res)
         // комментарии загружены
-        dispatch({type: 'comments/load-success', payload: {data: res.data.result}});
+        dispatch({type: 'comments/add-comment'});
 
       } catch (e) {
         //Ошибка загрузки
