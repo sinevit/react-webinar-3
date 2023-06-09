@@ -15,14 +15,10 @@ import {useDispatch, useSelector as useSelectorRedux} from 'react-redux';
 import shallowequal from "shallowequal";
 import articleActions from '../../store-redux/article/actions';
 import commentsActions from '../../store-redux/comments/actions';
-import Comments from '../../components/comments';
+import Comments from '../../containers/comments';
 
 function Article() {
   const store = useStore();
-
-  const selected = useSelector(state => ({
-    exists: state.session.exists
-  }));
 
   const dispatch = useDispatch();
   // Параметры из пути /articles/:id
@@ -37,21 +33,15 @@ function Article() {
   const select = useSelectorRedux(state => ({
     article: state.article.data,
     waiting: state.article.waiting,
-    comments: state.comments.data,
-    waitingC: state.comments.waiting,
+    waitingComment: state.comments.waiting,
   }), shallowequal); // Нужно указать функцию для сравнения свойства объекта, так как хуком вернули объект
 
   const {t} = useTranslate();
   const callbacks = {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
-    // Добавление поста
-    postComment: useCallback((postText) => {
-      dispatch(commentsActions.addComment(postText,params.id, 'article'))
-      dispatch(commentsActions.load(params.id));
-    }, [store]),
   }
-  console.log(select.comments)
+
   return (
     <PageLayout>
       <TopHead/>
@@ -62,8 +52,8 @@ function Article() {
       <Spinner active={select.waiting}>
         <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
       </Spinner>
-      <Spinner active={select.waitingC}>
-        <Comments isExists={selected.exists} data={select.comments} postComment={callbacks.postComment}/>
+      <Spinner active={select.waitingComment}>
+        <Comments/>
       </Spinner>
     </PageLayout>
   );

@@ -37,7 +37,7 @@ export default {
             parent: { _id: parentId, _type: type },
           }),
         });
-        console.log(res)
+
         // комментарии загружены
         dispatch({type: 'comments/add-comment'});
 
