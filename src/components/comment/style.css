@@ -1,0 +1,46 @@
+.Comment {
+  font-family: 'Arial';
+  font-style: normal;
+  border: 1px solid black;
+  margin-bottom: 30px;
+}
+
+.Comment-head {
+  display: flex;
+  gap: 10px;
+}
+
+.Comment-user-name {
+  margin: 0;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.Comment-date {
+  margin: 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #666666;
+}
+
+.Comment-content{
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.Item-actions {
+  padding: 20px 20px 20px 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px
+}
+
+.Item-price {
+  padding: 0 0 0 10px;
+  white-space: nowrap;
+  font-size: 18px;
+}

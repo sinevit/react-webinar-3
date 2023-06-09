@@ -12,6 +12,7 @@ import {useDispatch, useSelector as useSelectorRedux} from 'react-redux';
 import shallowequal from "shallowequal";
 import useSelector from "../../hooks/use-selector";
 import commentsActions from '../../store-redux/comments/actions';
+import Comment from "../../components/comment";
 
 
 function Comments() {
@@ -45,7 +46,11 @@ function Comments() {
       <CommentsLayout>
           <h3>Комментарии ({select.comments.count})</h3>
           {/* <h2>{t('comment.title')}</h2> */}
-          {/* <PostList></PostList> */}
+          {select.comments?.items && 
+          <>
+            {select.comments.items.map(item => <Comment data={item}/>)}
+          
+          </>}
           {selected.exists ? <NewComment postComment={callbacks.postComment}/> : <RedirectText/>}
       </CommentsLayout>
   );
