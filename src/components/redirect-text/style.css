@@ -1,0 +1,17 @@
+.RedirectText {
+  display: flex;
+}
+
+.RedirectText-text {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+}
+
+.RedirectText-link {
+  text-decoration-line: underline;
+  color: #0087E9;
+}
+
