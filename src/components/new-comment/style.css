@@ -1,8 +1,11 @@
 .NewComment {
   display: flex;
   flex-direction: column;
-  /* justify-content: flex-start; */
   align-items: flex-start;
+}
+
+.NewComment-answer {
+  padding-top: 30px;
 }
 
 .NewComment-label {
@@ -12,16 +15,21 @@
   font-weight: 700;
   font-size: 12px;
   line-height: 14px;
-  width: 100%; 
+  width: 100%;
 }
 
-.NewComment textarea { 
+.NewComment-buttons-block {
+  display: flex;
+  gap: 10px;
+}
+
+.NewComment textarea {
   box-sizing: border-box;
   margin-top: 10px;
   padding: 5px;
-  width: 100%; 
+  width: 100%;
 }
 
-.NewComment button { 
+.NewComment button {
   cursor: pointer;
 }

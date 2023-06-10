@@ -1,19 +1,14 @@
 import { memo, useCallback, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useStore from "../../hooks/use-store";
-
-import useInit from "../../hooks/use-init";
 import NewComment from "../../components/new-comment";
 import RedirectText from "../../components/redirect-text";
-// import {cn as bem} from '@bem-react/classname';
-// import './style.css';
 import CommentsLayout from "../../components/comments-layout";
 import { useDispatch, useSelector as useSelectorRedux } from 'react-redux';
 import shallowequal from "shallowequal";
 import useSelector from "../../hooks/use-selector";
 import commentsActions from '../../store-redux/comments/actions';
 import Comment from "../../components/comment";
-import treeToList from "../../utils/tree-to-list"
 import listToTree from "../../utils/list-to-tree"
 
 
@@ -41,41 +36,39 @@ function Comments() {
     postComment: useCallback((postText) => {
       dispatch(commentsActions.addComment(postText, params.id, 'article'))
       dispatch(commentsActions.load(params.id));
-    }, [store]),
-    answerComment: useCallback((id)=>(postText) => {
+    }, []),
+    // Добавление комментария
+    answerComment: useCallback((id) => (postText) => {
       dispatch(commentsActions.addComment(postText, id, 'comment'))
       dispatch(commentsActions.load(params.id));
-    }, [store]),
+    }, []),
+    //Открытие окна добавления ответа/нового коммента
     openAnswerForm: useCallback((id) => {
       setIsOpenAnswer(id)
     }, [isOpenAnswer]),
   }
 
-  const container = {
-    padding: 12,
-  }
   console.log(select.comments.items)
   console.log(isOpenAnswer)
-  const newArr = select.comments.items && (listToTree(select.comments.items));
 
-  const CommentContainer = ({ comments }) => {
-    console.log(comments);
+  const CommentContainer = ({ comments, main }) => {
+    console.log(comments)
     return (
-      <div style={container}>
+      <CommentsLayout padding={main? 'none': 'medium'}>
         {comments.map(item => item.children.length ?
           <>
             <Comment key={item._id} data={item} onOpen={callbacks.openAnswerForm}
               isOpenAnswer={isOpenAnswer} exists={selected.exists}
-              answerComment={callbacks.answerComment} parentId={item._id}/>
+              answerComment={callbacks.answerComment} parentId={item._id} closeAnswerForm={callbacks.openAnswerForm} />
             <CommentContainer key={`${item._id}child`} comments={item.children} />
           </>
           : <Comment key={item._id} data={item} onOpen={callbacks.openAnswerForm}
             isOpenAnswer={isOpenAnswer} exists={selected.exists}
-            answerComment={callbacks.answerComment} parentId={item._id} />
+            answerComment={callbacks.answerComment} parentId={item._id} closeAnswerForm={callbacks.openAnswerForm} />
         )
 
         }
-      </div>
+      </CommentsLayout>
     )
   }
 
@@ -83,15 +76,15 @@ function Comments() {
     <CommentsLayout>
       <h3>Комментарии ({select.comments.count})</h3>
       {/* <h2>{t('comment.title')}</h2> */}
-      {select.comments?.items && <CommentContainer comments={newArr} />}
+      {select.comments?.items && <CommentContainer comments={listToTree(select.comments.items)} main={true}/>}
 
       {!isOpenAnswer && !selected.exists && <RedirectText />}
-      {!isOpenAnswer && selected.exists 
-      && <NewComment title={'Новый комментарий'} isAnswer={isOpenAnswer} postComment={callbacks.postComment} />}
+      {!isOpenAnswer && selected.exists
+        && <NewComment title={'Новый комментарий'} isAnswer={isOpenAnswer} postComment={callbacks.postComment}/>}
+        
     </CommentsLayout>
   );
 }
-
 
 
 export default memo(Comments);

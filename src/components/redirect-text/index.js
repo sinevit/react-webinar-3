@@ -4,25 +4,32 @@ import { Link } from "react-router-dom";
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-function RedirectText({ isAnswer }) {
+function RedirectText({ isAnswer, closeAnswerForm }) {
   const cn = bem('RedirectText');
+
+  const callbacks = {
+    closeAnswerForm: () => closeAnswerForm(),
+  }
+
   return (
-    <div className={cn()}>
-      {isAnswer 
-      ? <p className={cn('text')}><Link to="/login" className={cn('link')}>Войдите</Link>, чтобы иметь возможность ответить</p> 
-      : <p className={cn('text')}><Link to="/login" className={cn('link')}>Войдите</Link>, чтобы иметь возможность комментировать</p>
+    <div className={isAnswer? `${cn('answer')} ${cn()}` :cn()}>
+      {isAnswer
+        ? <p className={cn('text')}><Link to="/login" className={cn('link')}>Войдите</Link>, чтобы иметь возможность ответить. </p>
+        : <p className={cn('text')}><Link to="/login" className={cn('link')}>Войдите</Link>, чтобы иметь возможность комментировать. </p>
       }
-      {isAnswer && <button type="reset">Отмена</button>}
+      {isAnswer && <p className={cn('text')}> <a className={cn('cancel')} onClick={callbacks.closeAnswerForm}>Отмена</a></p>}
     </div>
   )
 }
 
 RedirectText.propTypes = {
-  isAnswer: PropTypes.bool,
+  isAnswer: PropTypes.string.isRequired,
+  closeAnswerForm: PropTypes.func.isRequired,
 };
 
 RedirectText.defaultProps = {
-  isAnswer: false
+  isAnswer: '',
+  closeAnswerForm: () => { },
 }
 
 export default memo(RedirectText);
