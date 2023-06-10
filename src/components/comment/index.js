@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import dateFormat from "../../utils/format-date"
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
+import NewComment from "../new-comment";
+import RedirectText from "../redirect-text";
 
-function Comment({data}){
+function Comment({data, onOpen, isOpenAnswer, exists, answerComment, parentId}){
+  console.log(data);
 
   const cn = bem('Comment');
-  console.log(data)
 
   return (
     <div className={cn()}>
@@ -18,13 +20,21 @@ function Comment({data}){
       <div className={cn('content')}>
           <p>{data.text}</p>
       </div>
-      <button className={cn('button')}>Ответить</button>
+      <button className={cn('button') } onClick={()=>onOpen(data._id)}>Ответить</button>
+      {!isOpenAnswer  &&  <></>}
+      {isOpenAnswer === data._id && exists  &&  <NewComment  title={'Новый ответ'} isAnswer={isOpenAnswer} answerComment={answerComment(parentId)}/>}
+      {isOpenAnswer === data._id  && !exists &&   <RedirectText  />}
     </div>
   );
 }
 
 Comment.propTypes = {
-  date: PropTypes.object
+  date: PropTypes.object,
+  onOpen: PropTypes.func,
+  answerComment: PropTypes.func,
+  isOpenAnswer: PropTypes.bool,
+  exists: PropTypes.bool,
+  parentId: PropTypes.string,
 };
 
 Comment.defaultProps = {

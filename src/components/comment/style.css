@@ -25,18 +25,22 @@
   color: #666666;
 }
 
-.Comment-content{
+.Comment-content p{
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
+  word-wrap: break-word;
 }
 
-.Item-actions {
-  padding: 20px 20px 20px 10px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 20px
+.Comment-button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #0087e9;
+  cursor: pointer;
 }
 
 .Item-price {

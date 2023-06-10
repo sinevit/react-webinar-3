@@ -16,7 +16,12 @@
 }
 
 .NewComment textarea { 
+  box-sizing: border-box;
   margin-top: 10px;
   padding: 5px;
   width: 100%; 
+}
+
+.NewComment button { 
+  cursor: pointer;
 }
