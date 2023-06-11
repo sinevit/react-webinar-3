@@ -26,6 +26,7 @@ function Article() {
 
   useInit(() => {
     //store.actions.article.load(params.id);
+    store.actions.profile.load();
     dispatch(articleActions.load(params.id));
     dispatch(commentsActions.load(params.id));
   }, [params.id]);

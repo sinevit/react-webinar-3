@@ -6,8 +6,12 @@
   padding: 0 0 0 30px;
 }
 
-.CommentsLayout-none {
+.CommentsLayout-small {
   padding: 25px 0 0;
+}
+
+.CommentsLayout-none {
+  padding: 0;
 }
 
 .CommentsLayout h3{

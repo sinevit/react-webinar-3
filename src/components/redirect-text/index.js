@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-function RedirectText({ isAnswer, closeAnswerForm }) {
+function RedirectText({ isAnswer, closeAnswerForm, t }) {
   const cn = bem('RedirectText');
 
   const callbacks = {
@@ -12,12 +12,20 @@ function RedirectText({ isAnswer, closeAnswerForm }) {
   }
 
   return (
-    <div className={isAnswer? `${cn('answer')} ${cn()}` :cn()}>
+    <div className={cn()}>
       {isAnswer
-        ? <p className={cn('text')}><Link to="/login" className={cn('link')}>Войдите</Link>, чтобы иметь возможность ответить. </p>
-        : <p className={cn('text')}><Link to="/login" className={cn('link')}>Войдите</Link>, чтобы иметь возможность комментировать. </p>
+        ? <p className={cn('text')}>
+          <Link to="/login" className={cn('link')}>{t('comments.redirectText')}</Link>
+          {t('comments.redirectTextAnswer')}
+        </p>
+        : <p className={cn('text')}>
+          <Link to="/login" className={cn('link')}>{t('comments.redirectText')}</Link>
+          {t('comments.redirectTextComment')}
+        </p>
       }
-      {isAnswer && <p className={cn('text')}> <a className={cn('cancel')} onClick={callbacks.closeAnswerForm}>Отмена</a></p>}
+      {isAnswer && <p className={cn('text')}>
+        <a className={cn('cancel')} onClick={callbacks.closeAnswerForm}>{t('comments.cancel')}</a>
+      </p>}
     </div>
   )
 }
@@ -25,6 +33,7 @@ function RedirectText({ isAnswer, closeAnswerForm }) {
 RedirectText.propTypes = {
   isAnswer: PropTypes.string.isRequired,
   closeAnswerForm: PropTypes.func.isRequired,
+  t: PropTypes.func,
 };
 
 RedirectText.defaultProps = {

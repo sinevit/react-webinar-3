@@ -1,21 +1,31 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-function NewComment({ isAnswer, title, postComment, answerComment, closeAnswerForm }) {
+function NewComment({ isAnswer, title, postComment, answerComment, closeAnswerForm, status, t }) {
   const cn = bem('NewComment');
 
   const [commentContent, setCommentContent] = useState('');
 
+  useEffect(() => {
+    if (status === 'success') {
+      setCommentContent('')
+    }}, [status]);
+
   const callbacks = {
-    postComment: () => postComment(commentContent),
-    answerComment: () => answerComment(commentContent),
+    postComment: () => {
+      if(commentContent.trim() !== '')postComment(commentContent);
+    },
+    answerComment: () => {
+      if(commentContent.trim() !== '')answerComment(commentContent);
+      closeAnswerForm()
+    },
     closeAnswerForm: () => closeAnswerForm(),
   }
 
   return (
-    <div className={isAnswer? `${cn('answer')} ${cn()}` :cn()}>
+    <div className={cn()}>
       <label className={cn('label')}>{title}
         <textarea
           name='postContent'
@@ -25,12 +35,12 @@ function NewComment({ isAnswer, title, postComment, answerComment, closeAnswerFo
         />
       </label >
       <div className={cn('buttons-block')}>
-      {isAnswer 
-      ? <button type='submit' onClick={callbacks.answerComment}>Ответить</button>
-      : <button type='submit' onClick={callbacks.postComment}>Отправить</button>
-      }
-        {/* <button type='submit' onClick={isAnswer ? callbacks.answerComment : callbacks.postComment}>Отправить</button> */}
-        {isAnswer && <button type='reset' onClick={callbacks.closeAnswerForm}>Отмена</button>}
+        {isAnswer
+          ? <button type='submit' onClick={callbacks.answerComment}>{t('comments.send')}</button>
+          : <button type='submit' onClick={callbacks.postComment}>{t('comments.send')}</button>
+        }
+
+        {isAnswer && <button type='reset' onClick={callbacks.closeAnswerForm}>{t('comments.cancel')}</button>}
       </div>
     </div>
   );
@@ -39,9 +49,11 @@ function NewComment({ isAnswer, title, postComment, answerComment, closeAnswerFo
 NewComment.propTypes = {
   isAnswer: PropTypes.string,
   title: PropTypes.string,
+  status: PropTypes.string,
   postComment: PropTypes.func,
   answerComment: PropTypes.func,
   closeAnswerForm: PropTypes.func,
+  t: PropTypes.func,
 };
 
 

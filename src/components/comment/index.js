@@ -6,24 +6,30 @@ import './style.css';
 import NewComment from "../new-comment";
 import RedirectText from "../redirect-text";
 
-function Comment({ data, onOpen, isOpenAnswer, exists, answerComment, parentId, closeAnswerForm }) {
+function Comment({ data, onOpen, isOpenAnswer, exists, answerComment, parentId, closeAnswerForm, username, t }) {
 
   const cn = bem('Comment');
-
+  console
   return (
     <div className={cn()}>
       <div className={cn('head')}>
-        <p className={cn('user-name')} >{data.author.profile.name}</p>
+        <p className={data.author.profile.name === username ? cn('user-name', { login: true }) : cn('user-name')} >
+          {data.author.profile.name}</p>
         <p className={cn('date')} >{dateFormat(data.dateCreate)}</p>
       </div>
       <div className={cn('content')}>
         <p>{data.text}</p>
       </div>
-      <button className={cn('button')} onClick={() => onOpen(data._id)}>Ответить</button>
-      {!isOpenAnswer && <></>}
-      {isOpenAnswer === data._id && exists && 
-      <NewComment title={'Новый ответ'} closeAnswerForm={closeAnswerForm} isAnswer={isOpenAnswer} answerComment={answerComment(parentId)} />}
-      {isOpenAnswer === data._id && !exists && <RedirectText closeAnswerForm={closeAnswerForm} isAnswer={isOpenAnswer} />}
+      <button className={cn('button')} onClick={() => onOpen(data._id)}>{t('comments.answer')}</button>
+
+      {/* {!isOpenAnswer && <></>}
+
+      {isOpenAnswer === parentId && exists &&
+          <NewComment title={t('comments.newAnswer')} closeAnswerForm={closeAnswerForm}
+            isAnswer={isOpenAnswer} status={select.status} answerComment={answerComment(parentId)} t={t} />}
+
+      {isOpenAnswer === parentId && exists &&
+          <RedirectText closeAnswerForm={closeAnswerForm} isAnswer={isOpenAnswer} t={t} />} */}
     </div>
   );
 }
@@ -36,6 +42,8 @@ Comment.propTypes = {
   isOpenAnswer: PropTypes.string,
   exists: PropTypes.bool,
   parentId: PropTypes.string,
+  username: PropTypes.string,
+  t: PropTypes.func,
 };
 
 Comment.defaultProps = {

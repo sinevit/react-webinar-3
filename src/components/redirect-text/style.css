@@ -1,10 +1,7 @@
 .RedirectText {
   display: flex;
   gap: 5px;
-}
-
-.RedirectText-answer {
-  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .RedirectText-text{

@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useStore from "../../hooks/use-store";
 import NewComment from "../../components/new-comment";
@@ -10,6 +10,8 @@ import useSelector from "../../hooks/use-selector";
 import commentsActions from '../../store-redux/comments/actions';
 import Comment from "../../components/comment";
 import listToTree from "../../utils/list-to-tree"
+import treeToList from "../../utils/tree-to-list"
+import useTranslate from "../../hooks/use-translate";
 
 
 function Comments() {
@@ -17,7 +19,8 @@ function Comments() {
   const store = useStore();
 
   const selected = useSelector(state => ({
-    exists: state.session.exists
+    exists: state.session.exists,
+    user: state.session.user.profile,
   }));
 
   const dispatch = useDispatch();
@@ -27,7 +30,9 @@ function Comments() {
   const [isOpenAnswer, setIsOpenAnswer] = useState('');
 
   const select = useSelectorRedux(state => ({
-    comments: state.comments.data,
+    comments: state.comments.comments,
+    count: state.comments.count,
+    status: state.comments.status,
   }), shallowequal); // Нужно указать функцию для сравнения свойства объекта, так как хуком вернули объект
 
   // const {t} = useTranslate();
@@ -35,38 +40,53 @@ function Comments() {
     // Добавление поста
     postComment: useCallback((postText) => {
       dispatch(commentsActions.addComment(postText, params.id, 'article'))
-      dispatch(commentsActions.load(params.id));
     }, []),
     // Добавление комментария
     answerComment: useCallback((id) => (postText) => {
       dispatch(commentsActions.addComment(postText, id, 'comment'))
-      dispatch(commentsActions.load(params.id));
     }, []),
     //Открытие окна добавления ответа/нового коммента
     openAnswerForm: useCallback((id) => {
       setIsOpenAnswer(id)
     }, [isOpenAnswer]),
   }
+  const {t} = useTranslate();
 
-  console.log(select.comments.items)
-  console.log(isOpenAnswer)
+  // const commentsLvl = useMemo(() => ([
+  //   ...treeToList(listToTree(select.comments, 'comments'), (item, level) => (
+  //     {value: item._id, lvl: level}
+  //   ))
+  // ]), [select.comments])
+  // console.log(select.comments)
+  // // console.log(listToTree(select.comments))
+  // console.log(listToTree(select.comments, 'comments'))
+  // console.log(commentsLvl)
+
 
   const CommentContainer = ({ comments, main }) => {
-    console.log(comments)
+    // console.log(commentsLvl.find(el=> el.value === comments[0]._id).lvl)
     return (
-      <CommentsLayout padding={main? 'none': 'medium'}>
-        {comments.map(item => item.children.length ?
+      <CommentsLayout padding={main ? 'small' : 'medium'}>
+        {comments.map(item =>
           <>
-            <Comment key={item._id} data={item} onOpen={callbacks.openAnswerForm}
-              isOpenAnswer={isOpenAnswer} exists={selected.exists}
-              answerComment={callbacks.answerComment} parentId={item._id} closeAnswerForm={callbacks.openAnswerForm} />
-            <CommentContainer key={`${item._id}child`} comments={item.children} />
-          </>
-          : <Comment key={item._id} data={item} onOpen={callbacks.openAnswerForm}
-            isOpenAnswer={isOpenAnswer} exists={selected.exists}
-            answerComment={callbacks.answerComment} parentId={item._id} closeAnswerForm={callbacks.openAnswerForm} />
-        )
+            <Comment key={item._id} data={item} onOpen={callbacks.openAnswerForm} username={selected.user?.name} t={t}/>
 
+            {item.children.length ? <CommentContainer key={`${item._id}child`}  comments={item.children} /> : <></>}
+
+            {!isOpenAnswer && <></>}
+            
+            {isOpenAnswer === item._id && selected.exists &&
+              <CommentsLayout padding={'medium'}>
+                <NewComment title={t('comments.newAnswer')} closeAnswerForm={callbacks.openAnswerForm}
+                  isAnswer={isOpenAnswer} status={select.status} answerComment={callbacks.answerComment(item._id)} t={t}/>
+              </CommentsLayout>}
+
+            {isOpenAnswer === item._id && !selected.exists &&
+              <CommentsLayout padding={'medium'}>
+                <RedirectText closeAnswerForm={callbacks.openAnswerForm} isAnswer={isOpenAnswer} t={t}/>
+              </CommentsLayout>}
+          </>
+        )
         }
       </CommentsLayout>
     )
@@ -74,14 +94,13 @@ function Comments() {
 
   return (
     <CommentsLayout>
-      <h3>Комментарии ({select.comments.count})</h3>
-      {/* <h2>{t('comment.title')}</h2> */}
-      {select.comments?.items && <CommentContainer comments={listToTree(select.comments.items)} main={true}/>}
+      <h3>{t('comments.title')} ({select.count})</h3>
+      {select.comments && <CommentContainer comments={listToTree(select.comments, 'comments')} main={true} />}
 
-      {!isOpenAnswer && !selected.exists && <RedirectText />}
+      {!isOpenAnswer && !selected.exists && <RedirectText t={t}/>}
       {!isOpenAnswer && selected.exists
-        && <NewComment title={'Новый комментарий'} isAnswer={isOpenAnswer} postComment={callbacks.postComment}/>}
-        
+        && <NewComment title={t('comments.newComment')} status={select.status} isAnswer={isOpenAnswer} postComment={callbacks.postComment} t={t}/>}
+
     </CommentsLayout>
   );
 }
