@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import dateFormat from "../../utils/format-date"
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
-import NewComment from "../new-comment";
-import RedirectText from "../redirect-text";
 
 function Comment({ data, onOpen, isOpenAnswer, exists, answerComment, parentId, closeAnswerForm, username, t }) {
 
@@ -21,15 +19,6 @@ function Comment({ data, onOpen, isOpenAnswer, exists, answerComment, parentId, 
         <p>{data.text}</p>
       </div>
       <button className={cn('button')} onClick={() => onOpen(data._id)}>{t('comments.answer')}</button>
-
-      {/* {!isOpenAnswer && <></>}
-
-      {isOpenAnswer === parentId && exists &&
-          <NewComment title={t('comments.newAnswer')} closeAnswerForm={closeAnswerForm}
-            isAnswer={isOpenAnswer} status={select.status} answerComment={answerComment(parentId)} t={t} />}
-
-      {isOpenAnswer === parentId && exists &&
-          <RedirectText closeAnswerForm={closeAnswerForm} isAnswer={isOpenAnswer} t={t} />} */}
     </div>
   );
 }

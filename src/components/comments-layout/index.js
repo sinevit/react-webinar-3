@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-function CommentsLayout({ children, padding, lvl}) {
+function CommentsLayout({ children, padding}) {
   const cn = bem('CommentsLayout');
-  console.log(lvl)
   return (
     <div className={cn(padding)}>
       {children}
@@ -16,7 +15,7 @@ function CommentsLayout({ children, padding, lvl}) {
 CommentsLayout.propTypes = {
   children: PropTypes.node,
   padding: PropTypes.oneOf(['small', 'medium', 'none']),
-  lvl: PropTypes.number
+  id: PropTypes.number
 }
 
 CommentsLayout.defaultProps = {};

@@ -52,37 +52,25 @@ function Comments() {
   }
   const {t} = useTranslate();
 
-  // const commentsLvl = useMemo(() => ([
-  //   ...treeToList(listToTree(select.comments, 'comments'), (item, level) => (
-  //     {value: item._id, lvl: level}
-  //   ))
-  // ]), [select.comments])
-  // console.log(select.comments)
-  // // console.log(listToTree(select.comments))
-  // console.log(listToTree(select.comments, 'comments'))
-  // console.log(commentsLvl)
-
-
-  const CommentContainer = ({ comments, main }) => {
-    // console.log(commentsLvl.find(el=> el.value === comments[0]._id).lvl)
+  const CommentContainer = ({ comments, main ,lvl }) => {
     return (
-      <CommentsLayout padding={main ? 'small' : 'medium'}>
+      <CommentsLayout padding={main ? 'small' : (lvl < 5 ?  'medium' : 'none')}>
         {comments.map(item =>
           <>
             <Comment key={item._id} data={item} onOpen={callbacks.openAnswerForm} username={selected.user?.name} t={t}/>
 
-            {item.children.length ? <CommentContainer key={`${item._id}child`}  comments={item.children} /> : <></>}
+            {item.children.length ? <CommentContainer key={`${item._id}child`} comments={item.children} lvl={lvl+1}/> : <></>}
 
             {!isOpenAnswer && <></>}
             
             {isOpenAnswer === item._id && selected.exists &&
-              <CommentsLayout padding={'medium'}>
+              <CommentsLayout padding={(lvl < 5 ?  'medium' : 'none')}>
                 <NewComment title={t('comments.newAnswer')} closeAnswerForm={callbacks.openAnswerForm}
                   isAnswer={isOpenAnswer} status={select.status} answerComment={callbacks.answerComment(item._id)} t={t}/>
               </CommentsLayout>}
 
             {isOpenAnswer === item._id && !selected.exists &&
-              <CommentsLayout padding={'medium'}>
+              <CommentsLayout padding={(lvl < 5 ?  'medium' : 'none')}>
                 <RedirectText closeAnswerForm={callbacks.openAnswerForm} isAnswer={isOpenAnswer} t={t}/>
               </CommentsLayout>}
           </>
@@ -95,7 +83,7 @@ function Comments() {
   return (
     <CommentsLayout>
       <h3>{t('comments.title')} ({select.count})</h3>
-      {select.comments && <CommentContainer comments={listToTree(select.comments, 'comments')} main={true} />}
+      {select.comments && <CommentContainer comments={listToTree(select.comments, 'comments')} main={true} lvl={0}/>}
 
       {!isOpenAnswer && !selected.exists && <RedirectText t={t}/>}
       {!isOpenAnswer && selected.exists
