@@ -17,6 +17,9 @@ import useTranslate from "../../hooks/use-translate";
 function Comments() {
 
   const store = useStore();
+  const navigate = useNavigate();
+  const location = useLocation();
+
 
   const selected = useSelector(state => ({
     exists: state.session.exists,
@@ -35,7 +38,6 @@ function Comments() {
     status: state.comments.status,
   }), shallowequal); // Нужно указать функцию для сравнения свойства объекта, так как хуком вернули объект
 
-  // const {t} = useTranslate();
   const callbacks = {
     // Добавление поста
     postComment: useCallback((postText) => {
@@ -49,12 +51,16 @@ function Comments() {
     openAnswerForm: useCallback((id) => {
       setIsOpenAnswer(id)
     }, [isOpenAnswer]),
+
+    toLogin: useCallback(() => {
+      navigate("/login", { state: { back: location.pathname } });
+    }, [location.pathname]),
   }
   const {t} = useTranslate();
 
   const CommentContainer = ({ comments, main ,lvl }) => {
     return (
-      <CommentsLayout padding={main ? 'small' : (lvl < 5 ?  'medium' : 'none')}>
+      <CommentsLayout padding={main ? 'small' : (lvl < 15 ?  'medium' : 'none')}>
         {comments.map(item =>
           <>
             <Comment key={item._id} data={item} onOpen={callbacks.openAnswerForm} username={selected.user?.name} t={t}/>
@@ -64,14 +70,14 @@ function Comments() {
             {!isOpenAnswer && <></>}
             
             {isOpenAnswer === item._id && selected.exists &&
-              <CommentsLayout padding={(lvl < 5 ?  'medium' : 'none')}>
+              <CommentsLayout padding={(lvl < 15 ?  'medium' : 'none')}>
                 <NewComment title={t('comments.newAnswer')} closeAnswerForm={callbacks.openAnswerForm}
                   isAnswer={isOpenAnswer} status={select.status} answerComment={callbacks.answerComment(item._id)} t={t}/>
               </CommentsLayout>}
 
             {isOpenAnswer === item._id && !selected.exists &&
-              <CommentsLayout padding={(lvl < 5 ?  'medium' : 'none')}>
-                <RedirectText closeAnswerForm={callbacks.openAnswerForm} isAnswer={isOpenAnswer} t={t}/>
+              <CommentsLayout padding={(lvl < 15 ?  'medium' : 'none')}>
+                <RedirectText closeAnswerForm={callbacks.openAnswerForm} toLogin={callbacks.toLogin} isAnswer={isOpenAnswer} t={t}/>
               </CommentsLayout>}
           </>
         )
@@ -85,7 +91,7 @@ function Comments() {
       <h3>{t('comments.title')} ({select.count})</h3>
       {select.comments && <CommentContainer comments={listToTree(select.comments, 'comments')} main={true} lvl={0}/>}
 
-      {!isOpenAnswer && !selected.exists && <RedirectText t={t}/>}
+      {!isOpenAnswer && !selected.exists && <RedirectText t={t} toLogin={callbacks.toLogin}/>}
       {!isOpenAnswer && selected.exists
         && <NewComment title={t('comments.newComment')} status={select.status} isAnswer={isOpenAnswer} postComment={callbacks.postComment} t={t}/>}
 
