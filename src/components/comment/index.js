@@ -1,13 +1,20 @@
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import dateFormat from "../../utils/format-date"
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-function Comment({ data, onOpen, isOpenAnswer, exists, answerComment, parentId, closeAnswerForm, username, t }) {
+function Comment({ data, onOpen, username, t }) {
 
   const cn = bem('Comment');
-  console
+
+  const callbacks = {
+    commentBtnHandler: useCallback(() => {
+      onOpen(data._id);
+    }, []),
+  
+  }
+
   return (
     <div className={cn()}>
       <div className={cn('head')}>
@@ -18,7 +25,7 @@ function Comment({ data, onOpen, isOpenAnswer, exists, answerComment, parentId, 
       <div className={cn('content')}>
         <p>{data.text}</p>
       </div>
-      <button className={cn('button')} onClick={() => onOpen(data._id)}>{t('comments.answer')}</button>
+      <button className={cn('button')} onClick={callbacks.commentBtnHandler}>{t('comments.answer')}</button>
     </div>
   );
 }

@@ -1,11 +1,19 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-function RedirectText({ isAnswer, closeAnswerForm, t, toLogin}) {
+function RedirectText({ isAnswer, closeAnswerForm, t, toLogin }) {
   const cn = bem('RedirectText');
+
+  const tRef = useRef(null);
+
+  useEffect(() => {
+    if (isAnswer) {
+      tRef.current.scrollIntoView({block: "center", behavior: "smooth"});
+    }
+  }, [isAnswer]);
 
   const callbacks = {
     closeAnswerForm: () => closeAnswerForm(),
@@ -14,10 +22,10 @@ function RedirectText({ isAnswer, closeAnswerForm, t, toLogin}) {
   return (
     <div className={cn()}>
       {isAnswer
-        ? <p className={cn('text')} onClick={toLogin}>
-          <span  className={cn('link')}>{t('comments.redirectText')}</span>
+        ? <div ref={tRef} className={cn('text')} onClick={toLogin}>
+          <span  className={cn('link')} >{t('comments.redirectText')}</span>
           {t('comments.redirectTextAnswer')}
-        </p>
+        </div>
         : <p className={cn('text')} onClick={toLogin}>
           <span  className={cn('link')}>{t('comments.redirectText')}</span>
           {t('comments.redirectTextComment')}

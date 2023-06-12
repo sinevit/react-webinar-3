@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useStore from "../../hooks/use-store";
 import NewComment from "../../components/new-comment";
@@ -55,29 +55,31 @@ function Comments() {
     toLogin: useCallback(() => {
       navigate("/login", { state: { back: location.pathname } });
     }, [location.pathname]),
-  }
-  const {t} = useTranslate();
 
-  const CommentContainer = ({ comments, main ,lvl }) => {
+  }
+
+  const { t } = useTranslate();
+
+  const CommentContainer = ({ comments, main, lvl }) => {
     return (
-      <CommentsLayout padding={main ? 'small' : (lvl < 15 ?  'medium' : 'none')}>
+      <CommentsLayout padding={main ? 'small' : (lvl < 15 ? 'medium' : 'none')}>
         {comments.map(item =>
           <>
-            <Comment key={item._id} data={item} onOpen={callbacks.openAnswerForm} username={selected.user?.name} t={t}/>
+            <Comment key={item._id} data={item} onOpen={callbacks.openAnswerForm} username={selected.user?.name} t={t} />
 
-            {item.children.length ? <CommentContainer key={`${item._id}child`} comments={item.children} lvl={lvl+1}/> : <></>}
+            {item.children.length ? <CommentContainer key={`${item._id}child`} comments={item.children} lvl={lvl + 1} /> : <></>}
 
             {!isOpenAnswer && <></>}
-            
+
             {isOpenAnswer === item._id && selected.exists &&
-              <CommentsLayout padding={(lvl < 15 ?  'medium' : 'none')}>
+              <CommentsLayout padding={(lvl < 16 ? 'medium' : 'none')}>
                 <NewComment title={t('comments.newAnswer')} closeAnswerForm={callbacks.openAnswerForm}
-                  isAnswer={isOpenAnswer} status={select.status} answerComment={callbacks.answerComment(item._id)} t={t}/>
+                  isAnswer={isOpenAnswer} status={select.status}  answerComment={callbacks.answerComment(item._id)} t={t} />
               </CommentsLayout>}
 
             {isOpenAnswer === item._id && !selected.exists &&
-              <CommentsLayout padding={(lvl < 15 ?  'medium' : 'none')}>
-                <RedirectText closeAnswerForm={callbacks.openAnswerForm} toLogin={callbacks.toLogin} isAnswer={isOpenAnswer} t={t}/>
+              <CommentsLayout padding={(lvl < 16 ? 'medium' : 'none')}>
+                <RedirectText closeAnswerForm={callbacks.openAnswerForm} toLogin={callbacks.toLogin} isAnswer={isOpenAnswer} t={t} />
               </CommentsLayout>}
           </>
         )
@@ -89,11 +91,11 @@ function Comments() {
   return (
     <CommentsLayout>
       <h3>{t('comments.title')} ({select.count})</h3>
-      {select.comments && <CommentContainer comments={listToTree(select.comments, 'comments')} main={true} lvl={0}/>}
+      {select.comments && <CommentContainer comments={listToTree(select.comments, 'comments')} main={true} lvl={0} />}
 
-      {!isOpenAnswer && !selected.exists && <RedirectText t={t} toLogin={callbacks.toLogin}/>}
+      {!isOpenAnswer && !selected.exists && <RedirectText t={t} toLogin={callbacks.toLogin} />}
       {!isOpenAnswer && selected.exists
-        && <NewComment title={t('comments.newComment')} status={select.status} isAnswer={isOpenAnswer} postComment={callbacks.postComment} t={t}/>}
+        && <NewComment title={t('comments.newComment')} status={select.status} isAnswer={isOpenAnswer} postComment={callbacks.postComment} t={t} />}
 
     </CommentsLayout>
   );

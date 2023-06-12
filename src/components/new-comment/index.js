@@ -1,27 +1,38 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-function NewComment({ isAnswer, title, postComment, answerComment, closeAnswerForm, status, t }) {
+function NewComment({ isAnswer, title, postComment, answerComment, closeAnswerForm, status, t}) {
   const cn = bem('NewComment');
+
+  const textRef = useRef(null);
 
   const [commentContent, setCommentContent] = useState('');
 
   useEffect(() => {
     if (status === 'success') {
       setCommentContent('')
-    }}, [status]);
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (isAnswer) {
+      // textRef.current.focus()
+      textRef.current.scrollIntoView({block: "center", behavior: "smooth"});
+    }
+  }, [isAnswer]);
 
   const callbacks = {
     postComment: () => {
-      if(commentContent.trim() !== '')postComment(commentContent);
+      if (commentContent.trim() !== '') postComment(commentContent);
     },
     answerComment: () => {
-      if(commentContent.trim() !== '')answerComment(commentContent);
+      if (commentContent.trim() !== '') answerComment(commentContent);
       closeAnswerForm()
     },
     closeAnswerForm: () => closeAnswerForm(),
+
   }
 
   return (
@@ -36,7 +47,7 @@ function NewComment({ isAnswer, title, postComment, answerComment, closeAnswerFo
       </label >
       <div className={cn('buttons-block')}>
         {isAnswer
-          ? <button type='submit' onClick={callbacks.answerComment}>{t('comments.send')}</button>
+          ? <button ref={textRef} type='submit' onClick={callbacks.answerComment}>{t('comments.send')}</button>
           : <button type='submit' onClick={callbacks.postComment}>{t('comments.send')}</button>
         }
 
